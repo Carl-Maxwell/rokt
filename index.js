@@ -7,17 +7,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   var ratio = Math.max(Math.min(w, h), 1);
 
-  renderer = new PIXI.WebGLRenderer(400, 240);
+  renderer = new PIXI.WebGLRenderer(400 * ratio, 240 * ratio);
 
-  renderer.view.style.width  = 400*ratio;
-  renderer.view.style.height = 240*ratio;
+  PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+
+  // renderer.view.style.width  = 400*ratio;
+  // renderer.view.style.height = 240*ratio;
   renderer.view.style.marginLeft = (window.innerWidth  - ratio*400)/2;
   renderer.view.style.marginTop  = (window.innerHeight - ratio*240)/2;
   renderer.view.style.border = '1px solid #111';
 
   document.body.appendChild(renderer.view);
 
-  var scene = new PIXI.Container();
+  scene = new PIXI.Container();
+  scene.scale.x = ratio;
+  scene.scale.y = ratio;
 
   var bunnyTexture = PIXI.Texture.fromImage('pngs/bunny.png');
   var bunny        = new PIXI.Sprite(bunnyTexture);
@@ -25,20 +29,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var brickTexture = PIXI.Texture.fromImage('pngs/brick.png');
   var brick        = new PIXI.Sprite(brickTexture);
 
-  bunny.position.x = 200;
-  bunny.position.y = 200;
+  bunny.position.x = 200 - 8;
+  bunny.position.y = 240 / 2 - 8;
 
-  // bunny.scale.x = 2;
-  // bunny.scale.y = 2;
+  brick.x = 0;
+  brick.y = 240 - 16;
 
   scene.addChild(bunny);
+  scene.addChild(brick);
 
   animate();
 
   function animate() {
-      requestAnimationFrame(animate);
-      // bunny.rotation += 0.01;
-      renderer.render(scene);
+    requestAnimationFrame(animate);
+    // bunny.rotation += 0.01;
+    renderer.render(scene);
   }
 
 });
