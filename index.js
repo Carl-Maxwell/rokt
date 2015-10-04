@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   document.body.style.width  = window.innerWidth;
   document.body.style.height = window.innerHeight;
 
-  var w = Math.floor(window.innerWidth / 400);
+  var w = Math.floor(window.innerWidth  / 400);
   var h = Math.floor(window.innerHeight / 240);
 
   var ratio = Math.max(Math.min(w, h), 1);
@@ -11,10 +11,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
-  // renderer.view.style.width  = 400*ratio;
-  // renderer.view.style.height = 240*ratio;
   renderer.view.style.marginLeft = (window.innerWidth  - ratio*400)/2;
   renderer.view.style.marginTop  = (window.innerHeight - ratio*240)/2;
+
   renderer.view.style.border = '1px solid #111';
 
   document.body.appendChild(renderer.view);
@@ -42,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   function animate() {
     requestAnimationFrame(animate);
-    // bunny.rotation += 0.01;
     renderer.render(scene);
   }
-
 });
