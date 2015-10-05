@@ -1,5 +1,5 @@
 Entity    = function() { this.superInitialize.apply(this, arguments); };
-Component = function() { this.superInitialize.apply(this, arguments); this.initialize.apply(this, arguments); };
+Component = function() { this.superInitialize.apply(this, arguments); this.initialize.apply(this, [].slice.call(arguments, 1)); };
 System    = function() { this.superInitialize.apply(this, arguments); this.initialize.apply(this, arguments); };
 
 Component.extend = System.extend = extend;
@@ -9,15 +9,15 @@ Component.extend = System.extend = extend;
 //
 
 _.extend(Entity, {
-  extend: function(components) {
-    var extension = extend.apply(this);
+  extend: function(name, components) {
+    var extension = extend.apply(this, [name]);
     extension.components = components;
     return extension;
   }
 });
 
 _.extend(Entity.prototype, {
-  superInitialize: function() {
+  superInitialize: function(options) {
     var incomingComponents = this.constructor.components;
     this.components = [];
 
@@ -29,8 +29,17 @@ _.extend(Entity.prototype, {
         componentClass = componentClass[0];
       }
 
-      this.components.push(new componentClass(args));
+      var name = componentClass.name.toLowerCase();
+      if (name in options) {
+        args = options[name];
+      }
+
+      this.components.push(new componentClass(this, args));
     }.bind(this));
+
+    this.components.forEach(function(component) {
+      if (component.afterInitialize) component.afterInitialize();
+    });
   },
   initialize: function() {}
 });
@@ -40,8 +49,8 @@ _.extend(Entity.prototype, {
 //
 
 _.extend(Component.prototype, {
-  superInitialize: function() {
-
+  superInitialize: function(parent) {
+    this.parent = parent;
   },
   initialize: function() {}
 });

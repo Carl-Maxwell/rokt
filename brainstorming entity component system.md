@@ -35,11 +35,11 @@ Demon = Entity.extend([
   Motion,
   Physical,
   DemonBot,
-  [Sprite, 'demon.png']
+  [Sprite, 'demon']
 ]);
 
 player = new Player({position: [0, 0]});
 
-BrickTile    = Tile.extend([Sprite, 'bricks.png'  ]);
-PlatformTile = Tile.extend([Sprite, 'platform.png']);
+BrickTile    = Tile.extend([Sprite, 'bricks'  ]);
+PlatformTile = Tile.extend([Sprite, 'platform']);
 ```

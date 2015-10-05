@@ -1,4 +1,14 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+
+Rokt = {
+  offset: {x: 0, y: 0}
+};
+
+window.addEventListener("resize", sizeCanvas);
+
+PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+scene = new PIXI.Container();
+
+function sizeCanvas() {
   document.body.style.width  = window.innerWidth;
   document.body.style.height = window.innerHeight;
 
@@ -7,40 +17,69 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   var ratio = Math.max(Math.min(w, h), 1);
 
-  renderer = new PIXI.WebGLRenderer(400 * ratio, 240 * ratio);
-
-  PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+  if (typeof renderer == "undefined") {
+    renderer = new PIXI.WebGLRenderer(400 * ratio, 240 * ratio);
+    document.body.appendChild(renderer.view);
+  } else {
+    renderer.resize(400 * ratio, 240 * ratio);
+  }
 
   renderer.view.style.marginLeft = (window.innerWidth  - ratio*400)/2;
   renderer.view.style.marginTop  = (window.innerHeight - ratio*240)/2;
 
   renderer.view.style.border = '1px solid #111';
 
-  document.body.appendChild(renderer.view);
-
-  scene = new PIXI.Container();
   scene.scale.x = ratio;
   scene.scale.y = ratio;
+}
 
-  var bunnyTexture = PIXI.Texture.fromImage('pngs/bunny.png');
-  var bunny        = new PIXI.Sprite(bunnyTexture);
-
-  var brickTexture = PIXI.Texture.fromImage('pngs/brick.png');
-  var brick        = new PIXI.Sprite(brickTexture);
-
-  bunny.position.x = 200 - 8;
-  bunny.position.y = 240 / 2 - 8;
-
-  brick.x = 0;
-  brick.y = 240 - 16;
-
-  scene.addChild(bunny);
-  scene.addChild(brick);
+document.addEventListener("DOMContentLoaded", function(event) {
+  sizeCanvas();
 
   animate();
+  var lastTime = (new Date()).getTime();
 
-  function animate() {
+  function animate(time) {
+    var delta = time - lastTime;
+    lastTime = time;
+
     requestAnimationFrame(animate);
+
     renderer.render(scene);
   }
+
+  //
+  // setup the map
+  //
+
+  var bunny = new Bunny({position: [200 - 8, 240 / 2 - 8]});
+
 });
+
+Sprite = Component.extend('sprite', {
+  initialize: function(textureName) {
+    this.sprite = new PIXI.Sprite(Textures(textureName));
+
+    scene.addChild(this.sprite);
+  }
+});
+
+Position = Component.extend('position', {
+  initialize: function(position) {
+    this.x = position[0];
+    this.y = position[1];
+  },
+  afterInitialize: function() {
+    var sprite = this.parent.components.find(function(component) {
+      return component.constructor.name.toLowerCase() == 'sprite';
+    }).sprite;
+
+    sprite.x = this.x;
+    sprite.y = this.y;
+  }
+});
+
+Bunny = Entity.extend('bunny', [
+  Position,
+  [Sprite, 'bunny']
+]);

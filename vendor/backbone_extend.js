@@ -1,4 +1,4 @@
-extend = function(protoProps, staticProps) {
+extend = function(name, protoProps, staticProps) {
   var parent = this;
   var child;
 
@@ -14,6 +14,13 @@ extend = function(protoProps, staticProps) {
   child.prototype.constructor = child;
 
   child.__super__ = parent.prototype;
+
+  Object.defineProperty(child, 'name', {
+    enumerable: false,
+    configurable: true,
+    writable: false,
+    value: name
+  });
 
   return child;
 };
