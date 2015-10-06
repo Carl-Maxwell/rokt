@@ -1,6 +1,7 @@
 
-Rokt = {
-  offset: {x: 0, y: 0}
+Camera = {
+  x: 0,
+  y: 0
 };
 
 window.addEventListener("resize", sizeCanvas);
@@ -36,15 +37,18 @@ function sizeCanvas() {
 document.addEventListener("DOMContentLoaded", function(event) {
   sizeCanvas();
 
-  animate();
+  Keyboard.initialize();
+
   var lastTime = (new Date()).getTime();
+  animate(lastTime);
 
   function animate(time) {
-    var delta = time - lastTime;
+    var delta = (time - lastTime) / 1000.0;
     lastTime = time;
 
     requestAnimationFrame(animate);
 
+    TickManager.tick(delta);
     renderer.render(scene);
   }
 
@@ -56,30 +60,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 });
 
-Sprite = Component.extend('sprite', {
-  initialize: function(textureName) {
-    this.sprite = new PIXI.Sprite(Textures(textureName));
-
-    scene.addChild(this.sprite);
-  }
-});
-
-Position = Component.extend('position', {
-  initialize: function(position) {
-    this.x = position[0];
-    this.y = position[1];
-  },
-  afterInitialize: function() {
-    var sprite = this.parent.components.find(function(component) {
-      return component.constructor.name.toLowerCase() == 'sprite';
-    }).sprite;
-
-    sprite.x = this.x;
-    sprite.y = this.y;
-  }
-});
+//
+//
+//
 
 Bunny = Entity.extend('bunny', [
   Position,
+  PlayerInput,
+  Motion,
   [Sprite, 'bunny']
 ]);

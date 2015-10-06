@@ -1,8 +1,13 @@
-Entity    = function() { this.superInitialize.apply(this, arguments); };
-Component = function() { this.superInitialize.apply(this, arguments); this.initialize.apply(this, [].slice.call(arguments, 1)); };
-System    = function() { this.superInitialize.apply(this, arguments); this.initialize.apply(this, arguments); };
+Entity    = function() {
+  this.superInitialize.apply(this, arguments);
+};
 
-Component.extend = System.extend = extend;
+Component = function() {
+  this.superInitialize.apply(this, arguments);
+  this.initialize.apply(this, [].slice.call(arguments, 1));
+};
+
+Component.extend = extend;
 
 //
 // Entity
@@ -38,9 +43,11 @@ _.extend(Entity.prototype, {
     }.bind(this));
 
     this.components.forEach(function(component) {
+      if (component.superAfterInitialize) component.superAfterInitialize();
       if (component.afterInitialize) component.afterInitialize();
     });
   },
+
   initialize: function() {}
 });
 
@@ -49,17 +56,9 @@ _.extend(Entity.prototype, {
 //
 
 _.extend(Component.prototype, {
-  superInitialize: function(parent) {
-    this.parent = parent;
+  superInitialize: function(entity) {
+    this.entity = entity;
   },
-  initialize: function() {}
-});
 
-//
-// System
-//
-
-_.extend(System.prototype, {
-  superInitialize: function() {},
   initialize: function() {}
 });

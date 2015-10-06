@@ -1,0 +1,45 @@
+Rokt todo
+
+
+drawing tiles
+making tiles out of map ish arrays
+
+keyboard input
+collision detection
+  line trace
+  box vs box
+gravity
+walking
+jumping
+
+generating simple maps
+
+---
+
+(python?) build script to automatically generate index.html
+  special case: some components depend on components/ticking_component.js
+
+---
+
+enemies
+  drawing
+  getting shot
+  walking
+  falling
+  shooting
+  line of sight
+
+implementing the map generation algorithm
+
+---
+
+upgrades
+
+screenshake
+
+particles
+
+
+---
+
+pause on window losing focus
