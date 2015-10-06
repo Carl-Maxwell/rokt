@@ -22,9 +22,7 @@ PlayerInput = TickingComponent.extend('PlayerInput', {
     // }
 
     progress = (abs(this.entity.velocity.x) / this.maxVelocity) + progress;
-    progress = max(0, min( 1, progress));
-
-    // console.log(progress);
+    progress = max(0, min(1, progress));
 
     this.entity.velocity.x = Ease(progress, "outSine") * direction;
   }

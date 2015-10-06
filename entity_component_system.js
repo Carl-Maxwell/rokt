@@ -16,7 +16,12 @@ Component.extend = extend;
 _.extend(Entity, {
   extend: function(name, components) {
     var extension = extend.apply(this, [name]);
-    extension.components = components;
+    if (!('components' in extension)) {
+      extension.components = [];
+    }
+
+    extension.components = extension.components.concat(components);
+
     return extension;
   }
 });

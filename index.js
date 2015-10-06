@@ -1,32 +1,29 @@
-
-Camera = {
-  x: 0,
-  y: 0
-};
-
 window.addEventListener("resize", sizeCanvas);
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 scene = new PIXI.Container();
 
+WIDTH  = 400;
+HEIGHT = 240;
+
 function sizeCanvas() {
   document.body.style.width  = window.innerWidth;
   document.body.style.height = window.innerHeight;
 
-  var w = Math.floor(window.innerWidth  / 400);
-  var h = Math.floor(window.innerHeight / 240);
+  var w = Math.floor(window.innerWidth  / WIDTH);
+  var h = Math.floor(window.innerHeight / HEIGHT);
 
   var ratio = Math.max(Math.min(w, h), 1);
 
   if (typeof renderer == "undefined") {
-    renderer = new PIXI.WebGLRenderer(400 * ratio, 240 * ratio);
+    renderer = new PIXI.WebGLRenderer(WIDTH * ratio, HEIGHT * ratio);
     document.body.appendChild(renderer.view);
   } else {
-    renderer.resize(400 * ratio, 240 * ratio);
+    renderer.resize(WIDTH * ratio, HEIGHT * ratio);
   }
 
-  renderer.view.style.marginLeft = (window.innerWidth  - ratio*400)/2;
-  renderer.view.style.marginTop  = (window.innerHeight - ratio*240)/2;
+  renderer.view.style.marginLeft = (window.innerWidth  - ratio*WIDTH)/2;
+  renderer.view.style.marginTop  = (window.innerHeight - ratio*HEIGHT)/2;
 
   renderer.view.style.border = '1px solid #111';
 
@@ -38,6 +35,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
   sizeCanvas();
 
   Keyboard.initialize();
+  Camera.initialize();
+  Tiles.initialize();
+
+  //
+  // setup the map
+  //
+
+  var bunny = new Bunny({position: [WIDTH/2 - 8, HEIGHT/2 - 8]});
+
+  for (var i = 0; i < WIDTH/16; i++) {
+    var bricky = new Brick({tileposition: [i*16, HEIGHT - 16]});
+  }
+
+  var bricky = new Brick({tileposition: [WIDTH/2, HEIGHT - 16*4]});
+
+  //
+  // main loop
+  //
 
   var lastTime = (new Date()).getTime();
   animate(lastTime);
@@ -49,15 +64,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     requestAnimationFrame(animate);
 
     TickManager.tick(delta);
+    Camera.tick(bunny);
     renderer.render(scene);
   }
-
-  //
-  // setup the map
-  //
-
-  var bunny = new Bunny({position: [200 - 8, 240 / 2 - 8]});
-
 });
 
 //
