@@ -8,8 +8,9 @@ do not allow walking off map
 collision detection
   line trace
   box vs box
-gravity
-walking
+
+scrolling the map as you walk around
+  maybe just pretend pixi doesn't have .x & .y at all and just provide it each frame?
 
 generating simple maps
 
@@ -38,6 +39,21 @@ screenshake
 
 particles
 
+---
+
+things to animate:
+  hitting head on ceiling
+  landing
+  jumping
+  apex of jump
+  shooting
+  hitting enemy
+  getting hit
+  dying
+  winning level
+  upgrade acquisition
+  getting shot at
+  refire period expiry (being able to fire again, reloading)  
 
 ---
 

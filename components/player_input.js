@@ -2,7 +2,7 @@ PlayerInput = TickingComponent.extend('PlayerInput', {
   initialize: function(args) {
     if (!args) args = [];
 
-    this.maxVelocity = args[0] || 1;
+    this.maxVelocity = args[0] || 2;
     this.easingTime  = 10;
 
     Keyboard.on('z'         , this.jump.bind(this));
@@ -36,12 +36,12 @@ PlayerInput = TickingComponent.extend('PlayerInput', {
     //   direction = 1;
     // }
 
-    if (this.jumping && this.jumping + this.jumpDuration > now())
-      this.entity.velocity.y -= 2.30;
-
     progress = (abs(this.entity.velocity.x) / this.maxVelocity) + progress;
     progress = max(0, min(1, progress));
 
-    this.entity.velocity.x = Ease(progress, "outSine") * direction;
+    this.entity.velocity.x = Ease(progress, "outSine") * direction * this.maxVelocity;
+
+    if (this.jumping && this.jumping + this.jumpDuration > now())
+      this.entity.velocity.y -= 2.30;
   }
 });

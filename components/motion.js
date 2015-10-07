@@ -53,7 +53,7 @@ Motion = TickingComponent.extend('Motion', {
         var restituted = collision.position[axis];
 
         if (direction == -1) {
-          restituted += collision.size[dimension];
+          restituted += collision.size[dimension]-1;
         } else {
           restituted -= size[dimension];
         }
