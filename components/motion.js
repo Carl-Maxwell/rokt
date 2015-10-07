@@ -15,11 +15,16 @@ Motion = TickingComponent.extend('Motion', {
     // collision detection & restitution
 
     var end = {
-      x: position.x + velocity.x + size.width,
-      y: position.y + velocity.y + size.height
+      x: position.x + velocity.x,
+      y: position.y + velocity.y
     };
 
     // var xCollision = linetrace({x: end.x, y: position.y});
+
+    var direction = sign(velocity.y) || 1;
+
+    if (direction == 1) end.y += size.height;
+
     var yCollision = linetrace({x: position.x, y: end.y});
 
     if (!yCollision) {
@@ -33,8 +38,15 @@ Motion = TickingComponent.extend('Motion', {
 
       var heights = floor(size.height);
 
-      position.y = yCollision.position.y - size.height;
-      sprite.y   = yCollision.position.y - size.height;
+      var y = yCollision.position.y;
+
+      if (direction == -1)
+        y += yCollision.size.height;
+      else
+        y -= size.height;
+
+      position.y = y;
+      sprite.y   = y;
 
       velocity.y = 0;
     } else {

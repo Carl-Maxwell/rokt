@@ -1,8 +1,9 @@
 Rokt todo
 
 
-drawing tiles
 making tiles out of map ish arrays
+
+do not allow walking off map
 
 keyboard input
 collision detection
@@ -10,7 +11,6 @@ collision detection
   box vs box
 gravity
 walking
-jumping
 
 generating simple maps
 
