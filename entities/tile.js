@@ -1,1 +1,1 @@
-Tile = Entity.extend('Tile', [TilePosition]);
+Tile = Entity.extend('Tile', [TilePosition, Size]);

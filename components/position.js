@@ -4,8 +4,6 @@ Position = Component.extend('position', {
     this.y = position[1];
 
     this.entity.position = this;
-
-    this.velocity = this.entity.velocity = {x: 0, y: 0};
   },
 
   afterInitialize: function() {

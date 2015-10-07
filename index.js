@@ -6,6 +6,9 @@ scene = new PIXI.Container();
 WIDTH  = 400;
 HEIGHT = 240;
 
+TILE     = 16;
+HALFTILE = 8;
+
 function sizeCanvas() {
   document.body.style.width  = window.innerWidth;
   document.body.style.height = window.innerHeight;
@@ -22,7 +25,7 @@ function sizeCanvas() {
     renderer.resize(WIDTH * ratio, HEIGHT * ratio);
   }
 
-  renderer.view.style.marginLeft = (window.innerWidth  - ratio*WIDTH)/2;
+  renderer.view.style.marginLeft = (window.innerWidth  - ratio*WIDTH) /2;
   renderer.view.style.marginTop  = (window.innerHeight - ratio*HEIGHT)/2;
 
   renderer.view.style.border = '1px solid #111';
@@ -42,13 +45,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // setup the map
   //
 
-  var bunny = new Bunny({position: [WIDTH/2 - 8, HEIGHT/2 - 8]});
+  bunny = new Bunny({position: [WIDTH/2, HEIGHT/2]});
 
   for (var i = 0; i < WIDTH/16; i++) {
-    var bricky = new Brick({tileposition: [i*16, HEIGHT - 16]});
+    new Brick({tileposition: [i*16, HEIGHT - 16]});
   }
 
-  var bricky = new Brick({tileposition: [WIDTH/2, HEIGHT - 16*4]});
+  new Brick({tileposition: [WIDTH/2, HEIGHT - 16*4]});
+  new Brick({tileposition: [WIDTH/2, HEIGHT - 16*2]});
 
   //
   // main loop
@@ -75,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 Bunny = Entity.extend('bunny', [
   Position,
+  Size,
   PlayerInput,
   Motion,
   [Sprite, 'bunny']

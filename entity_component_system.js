@@ -44,7 +44,11 @@ _.extend(Entity.prototype, {
         args = options[name];
       }
 
-      this.components.push(new componentClass(this, args));
+      var newComponent = new componentClass(this, args);
+
+      this.components.push(newComponent);
+
+      this[newComponent.name] = newComponent;
     }.bind(this));
 
     this.components.forEach(function(component) {
