@@ -17,11 +17,11 @@ Keyboard = {
     change = !keyStates[key];
     keyStates[key] = true;
 
-    this.emit(key, evt);
+    if (change) this.emit(key, evt);
   },
 
   emit: function(name, evt) {
-    if (change && callbacks[name] && callbacks[name].length) {
+    if (callbacks[name] && callbacks[name].length) {
       callbacks[name].forEach(function(callback) {
         callback(evt);
       });

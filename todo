@@ -5,7 +5,6 @@ making tiles out of map ish arrays
 
 do not allow walking off map
 
-keyboard input
 collision detection
   line trace
   box vs box

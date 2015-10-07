@@ -1,7 +1,7 @@
 TilePosition = Component.extend('TilePosition', {
   initialize: function(position) {
-    var x = this.x = position[0];
-    var y = this.y = position[1];
+    var x = this.x = floor(position[0]/16)*16;
+    var y = this.y = floor(position[1]/16)*16;
 
     this.entity.position = this;
 

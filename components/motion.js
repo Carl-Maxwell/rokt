@@ -19,44 +19,60 @@ Motion = TickingComponent.extend('Motion', {
       y: position.y + velocity.y
     };
 
-    // var xCollision = linetrace({x: end.x, y: position.y});
+    collisions = {};
 
-    var direction = sign(velocity.y) || 1;
+    ['x', 'y'].forEach(function(axis) {
+      var direction = sign(velocity[axis]) || 1;
 
-    if (direction == 1) end.y += size.height;
+      var dimension      = axis == 'x' ? 'width'  : 'height';
+      var otherDimension = axis == 'x' ? 'height' : 'width';
 
-    var yCollision = linetrace({x: position.x, y: end.y});
+      var otherAxis = axis == 'x' ? 'y' : 'x';
 
-    if (!yCollision) {
-      yCollision = linetrace({x: position.x + size.width, y: end.y});
-    }
+      if (direction == 1) end[axis] += size[dimension];
 
-    if (yCollision) {
-      entity.movementMode = WALKING;
+      var point = {};
 
-      var difference = position.y - yCollision.position.y;
+      point[axis]      = end[axis];
+      point[otherAxis] = position[otherAxis];
 
-      var heights = floor(size.height);
+      var collision = linetrace(point);
 
-      var y = yCollision.position.y;
+      if (!collision) {
+        point[axis]      = end[axis];
+        point[otherAxis] = position[otherAxis] + size[otherDimension]-1;
 
-      if (direction == -1)
-        y += yCollision.size.height;
-      else
-        y -= size.height;
+        collision = linetrace(point);
+      }
 
-      position.y = y;
-      sprite.y   = y;
+      if (collision) {
+        collisions[axis + direction] = true;
 
-      velocity.y = 0;
-    } else {
+        var difference = position[axis] - collision.position[axis];
+
+        var restituted = collision.position[axis];
+
+        if (direction == -1) {
+          restituted += collision.size[dimension];
+        } else {
+          restituted -= size[dimension];
+        }
+
+        position[axis] = restituted;
+        sprite[axis]   = restituted;
+
+        velocity[axis] = 0;
+      }
+    }.bind(this));
+
+    if (!collisions['y1']) {
       entity.movementMode = FALLING;
 
       //gravity
-
-
       if (velocity.y < GRAVITY)
         velocity.y = (velocity.y + min(GRAVITY, GRAVITY - velocity.y) + velocity.y) /2;
+    } else {
+      entity.movementMode = WALKING;
     }
 
     //

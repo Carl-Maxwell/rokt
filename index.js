@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   new Brick({tileposition: [WIDTH/2, HEIGHT - 16*4]});
-  new Brick({tileposition: [WIDTH/2, HEIGHT - 16*2]});
+  new Brick({tileposition: [0, HEIGHT - 16*2]});
 
   for (var i2 = 0; i2 < (WIDTH/16/2 - 1); i2++) {
     new Brick({tileposition: [i2*16, HEIGHT/3*2]});
