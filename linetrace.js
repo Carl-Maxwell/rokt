@@ -1,7 +1,6 @@
-function linetrace(start, end) {
-  start.x /= 16;
-  start.y /= 16;
+// TODO name more appropriately
 
+function linetrace(end) {
   end.x /= 16;
   end.y /= 16;
 
@@ -17,7 +16,7 @@ function linetrace(start, end) {
 
   // actually do stuff
 
-  console.log(floor(end.x), floor(end.y));
+  // console.log(floor(end.x), floor(end.y));
 
   return Tiles.map[floor(end.x)][floor(end.y)];
 }

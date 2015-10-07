@@ -17,24 +17,30 @@ Keyboard = {
     change = !keyStates[key];
     keyStates[key] = true;
 
-    if (change && callbacks[key] && callbacks[key].length) {
-      callbacks[key].forEach(function(callback) {
+    this.emit(key, evt);
+  },
+
+  emit: function(name, evt) {
+    if (change && callbacks[name] && callbacks[name].length) {
+      callbacks[name].forEach(function(callback) {
         callback(evt);
       });
 
-      callbacks[key] = callbacks[key].filter(function(callback) {
+      callbacks[name] = callbacks[name].filter(function(callback) {
         return !callback.once;
       });
     }
   },
 
-  keyUp: function(evt) {
+  keyUp:function(evt) {
     key = fromWhichToString(evt.which);
+
+    this.emit(key + ':released', evt);
 
     keyStates[key] = false;
   },
 
-  on:   function(key, callback) {
+  on: function(key, callback) {
     if (key in callbacks) {
       callbacks[key].push(callback);
     } else {
@@ -42,7 +48,7 @@ Keyboard = {
     }
   },
 
-  off:  function(key) {
+  off: function(key) {
     callbacks[key] = [];
   },
 

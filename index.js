@@ -9,6 +9,8 @@ HEIGHT = 240;
 TILE     = 16;
 HALFTILE = 8;
 
+GRAVITY = 3;
+
 function sizeCanvas() {
   document.body.style.width  = window.innerWidth;
   document.body.style.height = window.innerHeight;
@@ -53,6 +55,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   new Brick({tileposition: [WIDTH/2, HEIGHT - 16*4]});
   new Brick({tileposition: [WIDTH/2, HEIGHT - 16*2]});
+
+  for (var i2 = 0; i2 < (WIDTH/16/2 - 1); i2++) {
+    new Brick({tileposition: [i2*16, HEIGHT/3*2]});
+  }
 
   //
   // main loop

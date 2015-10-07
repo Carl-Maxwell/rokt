@@ -4,7 +4,22 @@ PlayerInput = TickingComponent.extend('PlayerInput', {
 
     this.maxVelocity = args[0] || 1;
     this.easingTime  = 10;
+
+    Keyboard.on('z'         , this.jump.bind(this));
+    Keyboard.on('z:released', this.endJump.bind(this));
   },
+
+  jump: function(evt) {
+    if (this.entity.movementMode == WALKING) {
+      this.jumping = now();
+    }
+  },
+
+  endJump: function(evt) {
+    this.jumping = false;
+  },
+
+  jumpDuration: 0.2,
 
   tick: function(delta) {
     direction = 0;
@@ -20,6 +35,9 @@ PlayerInput = TickingComponent.extend('PlayerInput', {
     //   progress *= -1;
     //   direction = 1;
     // }
+
+    if (this.jumping && this.jumping + this.jumpDuration > now())
+      this.entity.velocity.y -= 2.30;
 
     progress = (abs(this.entity.velocity.x) / this.maxVelocity) + progress;
     progress = max(0, min(1, progress));

@@ -1,0 +1,3 @@
+
+WALKING = 'walking';
+FALLING = 'falling';

@@ -5,12 +5,12 @@ Motion = TickingComponent.extend('Motion', {
 
   tick: function(delta) {
     var velocity = this.velocity;
-    var position = this.entity.position;
-    var sprite   = this.entity.sprite;
-    var size     = this.entity.size;
+    var entity   = this.entity;
+    var position = entity.position;
+    var sprite   = entity.sprite;
+    var size     = entity.size;
 
-    //gravity
-
+    if (!size.width) return; //TODO this is a hack fix, proper solution is to add a loading bar to the game
 
     // collision detection & restitution
 
@@ -19,14 +19,16 @@ Motion = TickingComponent.extend('Motion', {
       y: position.y + velocity.y + size.height
     };
 
-    // var xCollision = linetrace({}, {x: end.x, y: position.y});
-    var yCollision = linetrace({}, {x: position.x, y: end.y});
+    // var xCollision = linetrace({x: end.x, y: position.y});
+    var yCollision = linetrace({x: position.x, y: end.y});
 
     if (!yCollision) {
-      yCollision = linetrace({}, {x: position.x + size.width, y: end.y});
+      yCollision = linetrace({x: position.x + size.width, y: end.y});
     }
 
     if (yCollision) {
+      entity.movementMode = WALKING;
+
       var difference = position.y - yCollision.position.y;
 
       var heights = floor(size.height);
@@ -36,7 +38,13 @@ Motion = TickingComponent.extend('Motion', {
 
       velocity.y = 0;
     } else {
-      if (velocity.y < 1) velocity.y += min(1, 1 - velocity.y);
+      entity.movementMode = FALLING;
+
+      //gravity
+
+
+      if (velocity.y < GRAVITY)
+        velocity.y = (velocity.y + min(GRAVITY, GRAVITY - velocity.y) + velocity.y) /2;
     }
 
     //
