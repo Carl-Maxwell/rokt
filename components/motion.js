@@ -50,10 +50,12 @@ Motion = TickingComponent.extend('Motion', {
 
         var difference = position[axis] - collision.position[axis];
 
-        var restituted = collision.position[axis];
+        var restituted = floor(collision.position[axis]);
 
         if (direction == -1) {
-          restituted += collision.size[dimension]-1;
+          restituted += collision.size[dimension];
+
+          if (axis == 'y') restituted -= 1; 
         } else {
           restituted -= size[dimension];
         }
